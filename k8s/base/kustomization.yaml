@@ -4,3 +4,7 @@ kind: Kustomization
 resources:
 - deployment.yaml
 - service.yaml
+images:
+- name: gcr.io/PROJECT_ID/IMAGE:TAG
+  newName: gcr.io/mv-service-project-7215/simple-app
+  newTag: 3dfrfr54544
