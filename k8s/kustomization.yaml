@@ -9,3 +9,8 @@ resources:
 
 commonAnnotations:
   type: cicd
+
+#images:
+#- name: gcr.io/PROJECT_ID/IMAGE:TAG
+#  newName: gcr.io/***/simple-app
+#  newTag: 4c597678bb7f15200933f9e15f5141862602f09e

@@ -16,5 +16,5 @@ spec:
         app: simple-app
     spec:
       containers:
-      - image: simple-app
+      - image: gcr.io/mv-service-project-7215/simple-app:latest
         name: simple-app
