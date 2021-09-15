@@ -14,17 +14,8 @@ name: Build and Deploy to GKE
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   workflow_dispatch:
-    inputs:
-      name:
-        description: 'Person to greet'
-        required: true
-        default: 'Mona the Octocat'
-      home:
-        description: 'location'
-        required: false
-        default: 'The Octoverse'
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
