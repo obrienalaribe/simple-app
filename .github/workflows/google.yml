@@ -62,8 +62,8 @@ jobs:
     - name: Create k8s manifests
       run: |-
         sed -i -e "s/${IMAGE}:.*/${IMAGE}:${GITHUB_SHA}/g" k8s/base/deployment.yaml
-        ./kustomize build ./k8s/overlays/dev/ > /tmp/k8s-manifests/${IMAGE}:${GITHUB_SHA}.yaml
-        cat /tmp/k8s-manifests/${IMAGE}:${GITHUB_SHA}.yaml
+        ./kustomize build ./k8s/overlays/dev/ > /tmp/${IMAGE}:${GITHUB_SHA}.yaml
+        cat /tmp/${IMAGE}:${GITHUB_SHA}.yaml
 
     
 #     # Get the GKE credentials so we can deploy to the cluster
