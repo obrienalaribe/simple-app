@@ -67,7 +67,7 @@ jobs:
       run: |-
         sed -i -e "s/${IMAGE}:.*/${IMAGE}:${GITHUB_SHA}/g" k8s/base/deployment.yaml
         ./kustomize build ./k8s/overlays/dev/ > ./k8s-artifacts/${IMAGE}:${GITHUB_SHA}.yaml
-        cat ./k8s-artifacts/${IMAGE}:${GITHUB_SHA}.yaml
+        cat ./k8s-artifacts/${IMAGE}-${GITHUB_SHA}.yaml
 
     - name: Save k8s manifest as artifact
       uses: actions/upload-artifact@v2
