@@ -77,12 +77,20 @@ jobs:
       with:
         repository: obrienalaribe/k8s-manifests
    
+    - name: Create deployment folder
+      run: |-
+        mkdir -p $DEPLOYMENT_NAME
+        
     - name: Download manifest artifact
       uses: actions/download-artifact@v2
       with:
         name: manifests
+        path: $DEPLOYMENT_NAME
+        
+    - name: Push artifact to CD repo
+      uses: actions-go/push@v1
+      with:
+        commit-message: This is a commit from CI process
+        
     
-    - name: View folder contents
-      run: |-
-        ls -lt
-    
+
