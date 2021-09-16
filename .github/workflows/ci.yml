@@ -82,7 +82,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: manifests
-        path: test
+        path: ${{ env.IMAGE }}
        
     - name: Setup tmate session
       uses: mxschmitt/action-tmate@v3.6
