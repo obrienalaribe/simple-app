@@ -6,9 +6,6 @@ on:
   workflow_dispatch:
 
 env:
-  GKE_CLUSTER: paid-network-cluster   
-  GKE_ZONE: europe-west1 
-  DEPLOYMENT_NAME: simple-app
   IMAGE: simple-app
   PROJECT_ID: mv-service-project-7215
 
@@ -79,21 +76,21 @@ jobs:
    
     - name: Create deployment folder
       run: |-
-        mkdir -p $DEPLOYMENT_NAME
+        mkdir -p $IMAGE
         
     - name: Download manifest artifact
       uses: actions/download-artifact@v2
       with:
         name: manifests
-        path: $DEPLOYMENT_NAME
+        path: ${IMAGE}
     
     - name: Check in manifests
       run: |-
-        ls -lt
-        git add $DEPLOYMENT_NAME/*
+        ls -lt ${IMAGE}
+        git add $IMAGE/*
         git commit -m "This is a commit from CI process"
         git status
-        git push -u {{ github.ref }}
+#         git push -u {{ github.ref }}
 
 
 
