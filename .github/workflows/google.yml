@@ -72,7 +72,7 @@ jobs:
     - name: Save k8s manifest as artifact
       uses: actions/upload-artifact@v2
       with:
-        name: ${IMAGE}:${GITHUB_SHA}
+        name: ${IMAGE}-${GITHUB_SHA}
         path: k8s-artifacts
     
 #     # Get the GKE credentials so we can deploy to the cluster
