@@ -65,6 +65,11 @@ jobs:
         ./kustomize build ./k8s/overlays/dev/ > /tmp/${IMAGE}:${GITHUB_SHA}.yaml
         cat /tmp/${IMAGE}:${GITHUB_SHA}.yaml
 
+    - name: Save k8s manifest as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${IMAGE}:${GITHUB_SHA}
+        path: /tmp/${IMAGE}:${GITHUB_SHA}.yaml
     
 #     # Get the GKE credentials so we can deploy to the cluster
 #     - name: Get GKE Credentials
