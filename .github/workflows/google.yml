@@ -10,7 +10,7 @@ env:
   GKE_ZONE: europe-west1 
   DEPLOYMENT_NAME: simple-app
   IMAGE: simple-app
-  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  PROJECT_ID: mv-service-project-7215
 
 jobs:
   build-docker-image:
@@ -25,7 +25,7 @@ jobs:
     - uses: google-github-actions/setup-gcloud@v0.2.0
       with:
         service_account_key: ${{ secrets.GKE_SA_KEY }}
-        project_id: ${{ secrets.GKE_PROJECT }}
+        project_id: mv-service-project-7215
 
     # Configure Docker to use the gcloud command-line tool as a credential
     # helper for authentication
@@ -37,11 +37,11 @@ jobs:
     - name: Build Docker Image
       run: |-
         docker build \
-          --tag "gcr.io/paid-network-202104/$IMAGE:$GITHUB_SHA" \
+          --tag "gcr.io/mv-service-project-7215/$IMAGE:$GITHUB_SHA" \
           .
     - name: Publish Image to GCR
       run: |-
-        docker push "gcr.io/paid-network-202104/$IMAGE:$GITHUB_SHA"
+        docker push "gcr.io/mv-service-project-7215/$IMAGE:$GITHUB_SHA"
       
   generate-k8s-manifest:
     name: Generate & Kustomize k8s manifests
