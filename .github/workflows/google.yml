@@ -46,31 +46,24 @@ jobs:
   generate-k8s-manifest:
     name: Generate & Kustomize k8s manifests
     runs-on: ubuntu-latest
+    needs: build-docker-image
       
     steps:
     - name: Checkout k8s cd manifest repo
       uses: actions/checkout@master
       with:
         repository: obrienalaribe/simple-app
-    
-    - name: View repo files
-      run: |- 
-        ls -al 
-          
+
     - name: Set up Kustomize
       run: |-
         curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
         chmod u+x ./kustomize
-    
-#     Create k8s manifests for CD
-#     - name: Create k8s manifests
-#       run: |-
-#         sed -i -e "s/${IMAGE}:.*/${IMAGE}:${GITHUB_SHA}/g" k8s/base/deployment.yaml
-#         ./kustomize build ./k8s/overlays/prod/ > /tmp/k8s-manifests/${IMAGE}.yaml
         
-#         cat k8s/base/deployment.yaml | kubectl apply -f -
-#         kubectl rollout status deployment/$DEPLOYMENT_NAME
-#         kubectl get services -o wide
+    - name: Create k8s manifests
+      run: |-
+        sed -i -e "s/${IMAGE}:.*/${IMAGE}:${GITHUB_SHA}/g" k8s/base/deployment.yaml
+        ./kustomize build ./k8s/overlays/dev/ > /tmp/k8s-manifests/${IMAGE}:${GITHUB_SHA}.yaml
+        cat /tmp/k8s-manifests/${IMAGE}:${GITHUB_SHA}.yaml
 
     
 #     # Get the GKE credentials so we can deploy to the cluster
