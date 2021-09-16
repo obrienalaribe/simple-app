@@ -58,18 +58,22 @@ jobs:
       run: |-
         curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
         chmod u+x ./kustomize
+    
+    - name: Create artifacts folder:
+      run: |-
+        mkdir k8s-artifacts
         
     - name: Create k8s manifests
       run: |-
         sed -i -e "s/${IMAGE}:.*/${IMAGE}:${GITHUB_SHA}/g" k8s/base/deployment.yaml
-        ./kustomize build ./k8s/overlays/dev/ > /tmp/${IMAGE}:${GITHUB_SHA}.yaml
-        cat /tmp/${IMAGE}:${GITHUB_SHA}.yaml
+        ./kustomize build ./k8s/overlays/dev/ > ./k8s-artifacts/${IMAGE}:${GITHUB_SHA}.yaml
+        cat ./k8s-artifacts/${IMAGE}:${GITHUB_SHA}.yaml
 
     - name: Save k8s manifest as artifact
       uses: actions/upload-artifact@v2
       with:
         name: ${IMAGE}:${GITHUB_SHA}
-        path: /tmp
+        path: k8s-artifacts
     
 #     # Get the GKE credentials so we can deploy to the cluster
 #     - name: Get GKE Credentials
