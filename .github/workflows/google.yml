@@ -10,14 +10,13 @@ env:
   GKE_ZONE: europe-west1 
   DEPLOYMENT_NAME: simple-app
   IMAGE: simple-app
+  PROJECT_ID: paid-network-202104
 
 jobs:
   build-docker-image:
     name: Build & Publish Docker Image
     runs-on: ubuntu-latest
-    env: 
-      PROJECT_ID: paid-network-202104
-
+    
     steps:
     - name: Checkout
       uses: actions/checkout@v2
