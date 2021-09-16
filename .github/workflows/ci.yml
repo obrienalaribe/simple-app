@@ -73,9 +73,6 @@ jobs:
       uses: actions/checkout@master
       with:
         repository: obrienalaribe/k8s-manifests
-   
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3.6
      
     - name: Create deployment folder
       run: |-
@@ -85,8 +82,11 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: manifests
-        path: ${IMAGE}
-    
+        path: test
+       
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3.6
+      
     - name: Check in manifests
       run: |-
         ls -lt ${IMAGE}
