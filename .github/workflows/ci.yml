@@ -86,16 +86,15 @@ jobs:
       with:
         name: manifests
         path: $DEPLOYMENT_NAME
+    
+    - name: Check in manifests
+      run: |-
+        git add $DEPLOYMENT_NAME/*
+        git status
         
     - name: Push artifact to CD repo
       uses: actions-go/push@v1
       with:
-        commit-message: This is a commit from CI process
-    
-    - name: Check git status
-      run: |-
-        git status
-        
-        
-    
+        commit-message: This is a commit from CI process      
+
 
