@@ -69,7 +69,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: ${IMAGE}:${GITHUB_SHA}
-        path: /tmp/${IMAGE}:${GITHUB_SHA}.yaml
+        path: /tmp
     
 #     # Get the GKE credentials so we can deploy to the cluster
 #     - name: Get GKE Credentials
