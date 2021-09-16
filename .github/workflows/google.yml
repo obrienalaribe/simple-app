@@ -37,11 +37,11 @@ jobs:
     - name: Build Docker Image
       run: |-
         docker build \
-          --tag "gcr.io/${{ secrets.GKE_PROJECT }}/$IMAGE:$GITHUB_SHA" \
+          --tag "gcr.io/paid-network-202104/$IMAGE:$GITHUB_SHA" \
           .
     - name: Publish Image to GCR
       run: |-
-        docker push "gcr.io/${{ secrets.GKE_PROJECT }}/$IMAGE:$GITHUB_SHA"
+        docker push "gcr.io/paid-network-202104/$IMAGE:$GITHUB_SHA"
       
   generate-k8s-manifest:
     name: Generate & Kustomize k8s manifests
