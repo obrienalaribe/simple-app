@@ -74,6 +74,9 @@ jobs:
       with:
         repository: obrienalaribe/k8s-manifests
    
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3.6
+     
     - name: Create deployment folder
       run: |-
         mkdir -p $IMAGE
