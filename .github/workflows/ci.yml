@@ -84,16 +84,19 @@ jobs:
         name: manifests
         path: ${{ env.IMAGE }}
        
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3.6
+#     - name: Setup tmate session
+#       uses: mxschmitt/action-tmate@v3.6
       
     - name: Check in manifests
       run: |-
         ls -lt ${IMAGE}
         git add $IMAGE/*
-        git commit -m "This is a commit from CI process"
-        git status
-#         git push -u {{ github.ref }}
-
+        
+    - name: Push changes
+      # You may pin to the exact commit or the version.
+      # uses: actions-go/push@7ad7ce209f2a038e7bca929b7a4c92026363f856
+      uses: actions-go/push@v1
+      with:
+        commit-message: "This is a commit from CI process"
 
 
