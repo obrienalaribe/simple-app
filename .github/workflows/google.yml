@@ -37,13 +37,13 @@ jobs:
     - name: Build Docker Image
       run: |-
         docker build \
-          --tag "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
+          --tag "gcr.io/${{ secrets.GKE_PROJECT }}/$IMAGE:$GITHUB_SHA"
           .
 
     # Push the Docker image to Google Container Registry
     - name: Publish Image to GCR
       run: |-
-        docker push "gcr.io/$PROJECT_ID/$IMAGE:$GITHUB_SHA"
+        docker push "gcr.io/${{ secrets.GKE_PROJECT }}/$IMAGE:$GITHUB_SHA"
     
     - name: Checkout k8s CD manifest repo
       uses: actions/checkout@master
