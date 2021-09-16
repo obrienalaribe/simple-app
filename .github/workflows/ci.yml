@@ -89,12 +89,11 @@ jobs:
     
     - name: Check in manifests
       run: |-
+        ls -lt
         git add $DEPLOYMENT_NAME/*
+        git commit -m "This is a commit from CI process"
         git status
-        
-    - name: Push artifact to CD repo
-      uses: actions-go/push@v1
-      with:
-        commit-message: This is a commit from CI process      
+        git push -u {{ github.ref }}
+
 
 
