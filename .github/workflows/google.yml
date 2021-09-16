@@ -77,7 +77,12 @@ jobs:
       with:
         repository: obrienalaribe/k8s-manifests
    
-    - name: Show folder content
+    - name: Download manifest artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: manifests
+    
+    - name: View folder contents
       run: |-
-        ls -la 
+        ls -lt
     
