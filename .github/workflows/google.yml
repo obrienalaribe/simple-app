@@ -10,7 +10,7 @@ env:
   GKE_ZONE: europe-west1 
   DEPLOYMENT_NAME: simple-app
   IMAGE: simple-app
-  PROJECT_ID: paid-network-202104
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
 
 jobs:
   build-docker-image:
@@ -25,7 +25,7 @@ jobs:
     - uses: google-github-actions/setup-gcloud@v0.2.0
       with:
         service_account_key: ${{ secrets.GKE_SA_KEY }}
-        project_id: ${PROJECT_ID}
+        project_id: ${{ secrets.GKE_PROJECT }}
 
     # Configure Docker to use the gcloud command-line tool as a credential
     # helper for authentication
