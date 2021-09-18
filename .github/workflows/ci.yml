@@ -87,7 +87,7 @@ jobs:
 #     - name: Setup tmate session
 #       uses: mxschmitt/action-tmate@v3.6
       
-    - name: Check in manifests
+    - name: Stage manifests
       run: |-
         ls -lt ${IMAGE}
         git add $IMAGE/*
