@@ -8,10 +8,12 @@ on:
 env:
   IMAGE: simple-app
   PROJECT_ID: mv-service-project-7215
-  IMAGE_TAG: ${{ echo $GITHUB_SHA | cut -c 1-7 }}
 
 jobs:
   build-image:
+    env:
+      IMAGE_TAG: ${{ echo $GITHUB_SHA | cut -c 1-7 }}
+
     name: Build & Publish Docker Image
     runs-on: ubuntu-latest
     
