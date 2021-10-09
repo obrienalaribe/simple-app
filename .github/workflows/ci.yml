@@ -2,21 +2,25 @@ name: Build and Deploy to GKE
 
 on:
   push:
-    branches: [main]
+    branches: ["*"]
   workflow_dispatch:
 
 env:
   IMAGE: simple-app
   PROJECT_ID: mv-service-project-7215
+  IMAGE_TAG: ${{ echo $GITHUB_SHA | cut -c 1-7 }}
 
 jobs:
   build-image:
     name: Build & Publish Docker Image
     runs-on: ubuntu-latest
     
+  
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+      
+    - name: Output 
 
     # Setup gcloud CLI
     - uses: google-github-actions/setup-gcloud@v0.2.0
@@ -34,35 +38,12 @@ jobs:
     - name: Build Docker Image
       run: |-
         docker build \
-          --tag "gcr.io/mv-service-project-7215/$IMAGE:$GITHUB_SHA" \
+          --tag "gcr.io/mv-service-project-7215/$GITHUB_REPOSITORY:$IMAGE_TAG" \
           .
     - name: Publish Image to GCR
       run: |-
-        docker push "gcr.io/mv-service-project-7215/$IMAGE:$GITHUB_SHA"
+        docker push "gcr.io/mv-service-project-7215/$GITHUB_REPOSITORY:$IMAGE_TAG"
 
-    - name: Set up Kustomize
-      run: |-
-        curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
-        chmod u+x ./kustomize
-    
-    - name: Create artifacts folder
-      run: |-
-        mkdir k8s-artifacts
-        
-    - name: Create k8s manifests
-      run: |-
-        ls -la
-        ls k8s/base
-        sed -i -e "s/${IMAGE}:.*/${IMAGE}:${GITHUB_SHA}/g" k8s/base/deployment.yaml
-        ./kustomize build ./k8s/overlays/dev/ > ./k8s-artifacts/${IMAGE}-${GITHUB_SHA}.yaml
-        cat ./k8s-artifacts/${IMAGE}-${GITHUB_SHA}.yaml
-
-    - name: Save k8s manifest as artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: manifests
-        path: k8s-artifacts
-    
   trigger-deployment:
     name: Trigger Deployment
     runs-on: ubuntu-latest
@@ -74,27 +55,20 @@ jobs:
       with:
         repository: obrienalaribe/k8s-manifests
      
-    - name: Create deployment folder
+    - name: Create repo folder
       run: |-
-        mkdir -p $IMAGE
+        mkdir -p $GITHUB_REPOSITORY
         
-    - name: Download manifest artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: manifests
-        path: ${{ env.IMAGE }}
-       
 #     - name: Setup tmate session
 #       uses: mxschmitt/action-tmate@v3.6
       
     - name: Stage manifests
       run: |-
-        ls -lt ${IMAGE}
-        git add $IMAGE/*
+        ls -lt ${GITHUB_REPOSITORY}
+        touch $IMAGE_TAG > ${GITHUB_REPOSITORY}/version
+        git add $GITHUB_REPOSITORY/*
         
     - name: Push changes
-      # You may pin to the exact commit or the version.
-      # uses: actions-go/push@7ad7ce209f2a038e7bca929b7a4c92026363f856
       uses: actions-go/push@v1
       with:
         commit-message: "This is a commit from CI process"
