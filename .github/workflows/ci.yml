@@ -20,7 +20,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
       
-    - name: Output 
+    - name: Output Image Tag
+      run: echo $IMAGE_TAG
 
     # Setup gcloud CLI
     - uses: google-github-actions/setup-gcloud@v0.2.0
