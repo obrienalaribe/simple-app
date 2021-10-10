@@ -34,8 +34,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build-image]
     
-    env:
-      K8S_REPO_WORKSPACE: ${{ github.workspace }}/k8s-manifests
 
     steps:
     - name: Dump Github Context
