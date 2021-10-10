@@ -70,10 +70,8 @@ jobs:
     - name: Update app version
       run: |
           git checkout -b $BRANCH  \
-          && echo "$IMAGE_TAG" > version
-          && git add version \
-  #        && git push --set-upstream origin $BRANCH
-
+          && echo "$IMAGE_TAG" > version \
+          && git add version 
 
 #     - name: Setup tmate session
 #       uses: mxschmitt/action-tmate@v3.6 
