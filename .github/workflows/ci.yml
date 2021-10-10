@@ -62,7 +62,10 @@ jobs:
         echo "$IMAGE_TAG" > "${K8S_REPO_WORKSPACE}/version"
         cd "${K8S_REPO_WORKSPACE}" && git checkout -b ${{ github.ref }} \
           && git add version
-          
+
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3.6 
+    
     - name: Commit & Push
       uses: actions-go/push@v1
       with:
