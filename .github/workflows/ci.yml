@@ -21,7 +21,6 @@ jobs:
     - name: Compute Image Tag
       id: image
       run: |
-        # use bash variable expression to get the substring
         export GIT_PR_SHA="${{ github.sha }}"
         export GIT_PR_SHA_SHORT="${GIT_PR_SHA:0:7}"
 
