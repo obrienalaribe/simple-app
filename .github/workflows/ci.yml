@@ -60,11 +60,13 @@ jobs:
     - name: Update app version
       run: |
         echo "$IMAGE_TAG" > "${K8S_REPO_WORKSPACE}/version"
-        cd "${K8S_REPO_WORKSPACE}" && git checkout -b ${{ github.ref }} && git add version
+        cd "${K8S_REPO_WORKSPACE}" && git checkout -b ${{ github.ref }} \
+          && git add version && git commit -m "$APP version updated to $IMAGE_TAG" \
+          && git push -u ${{ github.ref }}
 
-    - name: Commit & Push
-      uses: actions-go/push@v1
-      with:
-        commit-message: "$APP version updated to $IMAGE_TAG"
-        token: ${{ secrets.CD_REPO_TOKEN }}
+#     - name: Commit & Push
+#       uses: actions-go/push@v1
+#       with:
+#         commit-message: "$APP version updated to $IMAGE_TAG"
+#         token: ${{ secrets.CD_REPO_TOKEN }}
 
