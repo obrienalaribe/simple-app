@@ -1,0 +1,13 @@
+name: Manually triggered workflow
+on:
+  pull_request:
+    branches: ["*"]
+    types: [closed]
+
+
+jobs:
+  remove-pr-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+         git push origin --delete ${{ github.head_ref }}
