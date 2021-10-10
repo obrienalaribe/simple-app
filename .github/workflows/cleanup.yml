@@ -13,3 +13,17 @@ jobs:
         uses: actions/checkout@v2
       - run: |
          git push origin --delete ${{ github.head_ref }}
+     
+      - name: Cleanup branch on CD repo
+        uses: convictional/trigger-workflow-and-wait@v1.3.0
+        with:
+          owner: obrienalaribe
+          repo: k8s-manifests
+          github_token: ${{ secrets.CD_REPO_TOKEN }}
+          workflow_file_name: cleanup.yml
+          ref: ${{ github.head_ref }}
+          wait_interval: 5
+          inputs: '{"branch": "${{ github.head_ref }}"}'
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: false
