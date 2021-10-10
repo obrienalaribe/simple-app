@@ -37,10 +37,8 @@ jobs:
     steps:
     - name: Check CI Outputs
       run: |
-        export IMAGE_TAG="${{ needs.build-image.outputs.image_tag }}"
-        export APP="${{ github.repository }}"
-        echo $IMAGE_TAG
-        echo $APP
+        echo "IMAGE_TAG=${{ needs.build-image.outputs.image_tag }}" >> $GITHUB_ENV
+        echo "APP=${{ github.repository }}" >> $GITHUB_ENV
         
     - name: Checkout CD repo
       uses: actions/checkout@master
@@ -49,6 +47,8 @@ jobs:
      
     - name: Create app folder
       run: |-
+        echo $IMAGE_TAG
+        echo $APP
         mkdir -p ${APP}
         
 #     - name: Setup tmate session
