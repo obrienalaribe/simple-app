@@ -63,7 +63,7 @@ jobs:
         workflow_file_name: main.yml
         ref: main
         wait_interval: 10
-        inputs: '{"version": "$IMAGE_TAG"}'
+        inputs: ''
         propagate_failure: false
         trigger_workflow: true
         wait_workflow: true
@@ -81,13 +81,13 @@ jobs:
 #           && git push --set-upstream origin $BRANCH
 
 
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3.6 
+#     - name: Setup tmate session
+#       uses: mxschmitt/action-tmate@v3.6 
     
-    - name: Commit & Push
-      uses: actions-go/push@v1
-      with:
-        commit-message: "$APP version updated to $IMAGE_TAG"
-        token: ${{ secrets.CD_REPO_TOKEN }}
-        force: true
+#     - name: Commit & Push
+#       uses: actions-go/push@v1
+#       with:
+#         commit-message: "$APP version updated to $IMAGE_TAG"
+#         token: ${{ secrets.CD_REPO_TOKEN }}
+#         force: true
 
