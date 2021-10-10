@@ -50,7 +50,7 @@ jobs:
         path: ${K8S_REPO_WORKSPACE}
      
     - name: Create app subfolder
-      run: mkdir -p ${K8S_REPO_WORKSPACE}/${APP}
+      run: mkdir -p "${K8S_REPO_WORKSPACE}/${APP}"
   
     - name: Setup tmate session
       uses: mxschmitt/action-tmate@v3.6      
