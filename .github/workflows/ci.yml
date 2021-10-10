@@ -47,9 +47,9 @@ jobs:
       with:
         repository: obrienalaribe/k8s-manifests
      
-    - name: Create repo folder
+    - name: Create app folder
       run: |-
-        mkdir -p ${GITHUB_REPOSITORY}
+        mkdir -p ${APP}
         
 #     - name: Setup tmate session
 #       uses: mxschmitt/action-tmate@v3.6
