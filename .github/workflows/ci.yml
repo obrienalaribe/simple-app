@@ -6,25 +6,29 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE: simple-app
-  PROJECT_ID: mv-service-project-7215
+  IMAGE_REGISTRY_PROJECT: mv-service-project-7215
 
 jobs:
   build-image:
 
     name: Build & Publish Docker Image
     runs-on: ubuntu-latest
-    
   
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-      
-    - name: Set env
-      run:  echo "IMAGE_TAG=$(echo $GITHUB_SHA | cut -c 1-7)" >> $GITHUB_ENV
-    
-    - name: Check env
-      run: echo $IMAGE_TAG
+
+    - id: Get SHA
+      run: |
+        # use bash variable expression to get the substring
+        export GIT_PR_SHA="${{ github.sha }}"
+        export GIT_PR_SHA_SHORT="${GIT_PR_SHA:0:7}"
+
+        echo "::set-output name=git_pr_sha::${GIT_PR_SHA}"
+        echo "::set-output name=git_pr_sha_short::${GIT_PR_SHA_SHORT}"
+    outputs:
+      git_pr_sha: ${{ steps.identify.outputs.git_pr_sha }}
+      git_pr_sha_short: ${{ steps.identify.outputs.git_pr_sha_short }}
 
   trigger-deployment:
     name: Trigger Deployment
@@ -32,6 +36,11 @@ jobs:
     needs: [build-image]
 
     steps:
+    - name: Check CI Outputs
+      run: |
+        echo "${{ needs.first-job.outputs.git_pr_sha }}"
+        echo "${{ needs.first-job.outputs.git_pr_sha_short }}"
+        
     - name: Checkout CD repo
       uses: actions/checkout@master
       with:
