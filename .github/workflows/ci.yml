@@ -19,17 +19,15 @@ jobs:
       uses: actions/checkout@v2
     
     - name: Compute Image Tag
-      id: image_tag
+      id: image
       run: |
         # use bash variable expression to get the substring
         export GIT_PR_SHA="${{ github.sha }}"
         export GIT_PR_SHA_SHORT="${GIT_PR_SHA:0:7}"
 
-        echo "::set-output name=git_pr_sha::${GIT_PR_SHA}"
-        echo "::set-output name=git_pr_sha_short::${GIT_PR_SHA_SHORT}"
+        echo "::set-output name=tag::${GIT_PR_SHA_SHORT}"
     outputs:
-      git_pr_sha: ${{ steps.image_tag.outputs.git_pr_sha }}
-      git_pr_sha_short: ${{ steps.image_tag.outputs.git_pr_sha_short }}
+      image_tag: ${{ steps.image.outputs.tag }}
 
   trigger-deployment:
     name: Trigger Deployment
@@ -39,8 +37,8 @@ jobs:
     steps:
     - name: Check CI Outputs
       run: |
-        echo "${{ needs.first-job.outputs.git_pr_sha }}"
-        echo "${{ needs.first-job.outputs.git_pr_sha_short }}"
+        export IMAGE_TAG="${{ needs.build-image.outputs.image_tag }}"
+        echo $IMAGE_TAG
         
     - name: Checkout CD repo
       uses: actions/checkout@master
