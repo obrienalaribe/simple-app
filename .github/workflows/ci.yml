@@ -43,6 +43,7 @@ jobs:
         echo "IMAGE_TAG=${{ needs.build-image.outputs.image_tag }}" >> $GITHUB_ENV
         echo "APP=$(basename ${{ github.repository }})" >> $GITHUB_ENV
         echo "K8S_REPO_WORKSPACE=${{ github.workspace }}/${APP}" >> $GITHUB_ENV
+        echo "BRANCH=$(basename ${{ github.ref }})" >> $GITHUB_ENV
         
     - name: Checkout CD repo
       uses: actions/checkout@master
@@ -60,8 +61,12 @@ jobs:
     - name: Update app version
       run: |
         echo "$IMAGE_TAG" > "${K8S_REPO_WORKSPACE}/version"
-        cd "${K8S_REPO_WORKSPACE}" && git checkout -b ${{ github.ref }} \
-          && git add version
+        cd "${K8S_REPO_WORKSPACE}" && git checkout -b $BRANCH  \
+          && git add version \
+          && git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ${{ secrets.CD_REPO_TOKEN }} \
+          && git commit -m"$APP version updated to $IMAGE_TAG" \
+          && git push --set-upstream origin $BRANCH
+
 
     - name: Setup tmate session
       uses: mxschmitt/action-tmate@v3.6 
