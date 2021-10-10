@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_REGISTRY_PROJECT: mv-service-project-7215
+  IMAGE_REGISTRY_PROJECT: mv-paid-images-d3d34
 
 jobs:
   build-image:
@@ -38,7 +38,7 @@ jobs:
     - name: Check CI Outputs
       run: |
         echo "IMAGE_TAG=${{ needs.build-image.outputs.image_tag }}" >> $GITHUB_ENV
-        echo "APP=${{ github.repository }}" >> $GITHUB_ENV
+        echo "APP=$(basename ${{ github.repository }})" >> $GITHUB_ENV
         
     - name: Checkout CD repo
       uses: actions/checkout@master
@@ -58,12 +58,14 @@ jobs:
       run: |-
         ls -lt ${APP}
         touch $IMAGE_TAG > ${APP}/version
+        cat ${APP}/version
         git add ${APP}/version
         
-    - name: Push changes
-      uses: actions-go/push@v1
+    - name: Commit & Push
+      uses: github-actions-x/commit@v2.8
       with:
-        commit-message: "This is a commit from CI process"
-        token: ${{ secrets.CD_REPO_TOKEN }}
+        commit-message: "$APP version updated to $IMAGE_TAG"
+        github-token: ${{ secrets.CD_REPO_TOKEN }}
+        push-branch: ${{ github.ref }}
 
 
