@@ -34,12 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build-image]
     
-    steps:
-    - name: Dump Github Context
-      env:
-        GH_CONTEXT: ${{ toJSON(github) }}
-      run: echo $GH_CONTEXT
-        
+    steps:        
     - name: Push new Version to CD
       uses: convictional/trigger-workflow-and-wait@v1.3.0
       with:
