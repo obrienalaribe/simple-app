@@ -1,4 +1,4 @@
-name: Manually triggered workflow
+name: Remove PR Branch
 on:
   pull_request:
     branches: ["*"]
@@ -9,5 +9,7 @@ jobs:
   remove-pr-branch:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - run: |
          git push origin --delete ${{ github.head_ref }}
