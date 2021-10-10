@@ -3,6 +3,8 @@ name: Build and Deploy to GKE
 on:
   pull_request:
     branches: ["main"]
+    types: [assigned, opened, synchronize, reopened]
+
 env:
   IMAGE_REGISTRY_PROJECT: mv-paid-images-d3d34
 
