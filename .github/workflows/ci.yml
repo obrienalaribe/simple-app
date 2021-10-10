@@ -57,6 +57,11 @@ jobs:
 #     - name: Setup tmate session
 #       uses: mxschmitt/action-tmate@v3.6      
 
+    - name: Set Git Config
+      run: |
+        git config user.email "ci@ob.com"
+        git config user.name "GHA"
+        
     - name: Update app version
       run: |
         echo "$IMAGE_TAG" > "${K8S_REPO_WORKSPACE}/version"
