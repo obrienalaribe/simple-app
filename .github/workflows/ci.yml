@@ -55,9 +55,8 @@ jobs:
 
     - name: Update app version
       run: |
-        cd ${K8S_REPO_WORKSPACE}/${APP}
-        echo $IMAGE_TAG > version
-        git add version
+        echo $IMAGE_TAG > ${K8S_REPO_WORKSPACE}/${APP}/version
+        cd ${K8S_REPO_WORKSPACE}/${APP} && git add version
   
     - name: Setup tmate session
       uses: mxschmitt/action-tmate@v3.6      
