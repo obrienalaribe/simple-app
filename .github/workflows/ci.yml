@@ -46,7 +46,7 @@ jobs:
         repository: obrienalaribe/k8s-manifests
      
     - name: Create app folder
-      run: |-
+      run: |
         echo $IMAGE_TAG
         echo $APP
         mkdir -p ${APP}
@@ -55,8 +55,7 @@ jobs:
 #       uses: mxschmitt/action-tmate@v3.6
       
     - name: Stage manifests
-      run: |-
-        ls -lt ${APP}
+      run: |
         touch $IMAGE_TAG > ${APP}/version
         cat ${APP}/version
         git add ${APP}/version
