@@ -81,5 +81,5 @@ jobs:
       with:
         force: true
         commit-message: "$APP version updated to $IMAGE_TAG" 
-        token: ${{ secrets.CD_REPO_TOKEN }}
+#        token: ${{ secrets.CD_REPO_TOKEN }}
 
