@@ -4,7 +4,6 @@ on:
     branches: ["*"]
     types: [closed]
 
-
 jobs:
   remove-pr-branch:
     runs-on: ubuntu-latest
