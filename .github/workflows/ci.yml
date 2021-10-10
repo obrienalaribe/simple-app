@@ -68,9 +68,6 @@ jobs:
 #         trigger_workflow: true
 #         wait_workflow: true
         
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3.6      
-
     - name: Update app version
       run: |
         echo "$IMAGE_TAG" > "${K8S_REPO_WORKSPACE}/version"
