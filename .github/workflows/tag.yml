@@ -1,0 +1,16 @@
+name: Tag new version
+
+on:
+  push:
+    branches: ["main"]
+    
+jobs:
+  tag-image:
+   name: Tag new version 
+   runs-on: ubuntu-latest
+   steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      
+    - name: Tag version
+      run: echo "tag new version v1.0.0 "
