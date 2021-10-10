@@ -34,7 +34,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build-image]
     
-
     steps:
     - name: Dump Github Context
       env:
