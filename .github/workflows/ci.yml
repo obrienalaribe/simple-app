@@ -1,10 +1,8 @@
 name: Build and Deploy to GKE
 
 on:
-  push:
-    branches: ["*"]
-  workflow_dispatch:
-
+  pull_request:
+    branches: ["main"]
 env:
   IMAGE_REGISTRY_PROJECT: mv-paid-images-d3d34
 
@@ -38,23 +36,13 @@ jobs:
       K8S_REPO_WORKSPACE: ${{ github.workspace }}/k8s-manifests
 
     steps:
-    - name: Set Job Envs
-      run: |
-        echo "IMAGE_TAG=${{ needs.build-image.outputs.image_tag }}" >> $GITHUB_ENV
-        echo "APP=$(basename ${{ github.repository }})" >> $GITHUB_ENV
-        echo "K8S_REPO_WORKSPACE=${{ github.workspace }}/${APP}" >> $GITHUB_ENV
-        echo "BRANCH=$(basename ${{ github.ref }})" >> $GITHUB_ENV
+    - name: Dump Github Context
+      env:
+        GH_CONTEXT: ${{ toJSON(github) }}
+      run: echo $GH_CONTEXT
         
-    - name: Checkout CD repo
-      uses: actions/checkout@master
-      with:
-        repository: obrienalaribe/k8s-manifests
-     
-    - name: Create app subfolder
-      run: |
-        mkdir -p "${K8S_REPO_WORKSPACE}"
-  
-    - uses: convictional/trigger-workflow-and-wait@v1.3.0
+    - name: Push new Version to CD
+      uses: convictional/trigger-workflow-and-wait@v1.3.0
       with:
         owner: obrienalaribe
         repo: k8s-manifests
@@ -72,10 +60,4 @@ jobs:
 #     - name: Setup tmate session
 #       uses: mxschmitt/action-tmate@v3.6 
     
-#     - name: Push changes
-#       uses: actions-go/push@v1
-#       with:
-#         force: true
-#         commit-message: "$APP version updated to $IMAGE_TAG" 
-# #        token: ${{ secrets.CD_REPO_TOKEN }}
 
