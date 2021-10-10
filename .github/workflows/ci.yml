@@ -49,7 +49,9 @@ jobs:
         repository: obrienalaribe/k8s-manifests
      
     - name: Create app subfolder
-      run: mkdir -p "${K8S_REPO_WORKSPACE}/${APP}"
+      run: |
+        mkdir -p "${K8S_REPO_WORKSPACE}/${APP}
+        echo "$IMAGE_TAG" > "${K8S_REPO_WORKSPACE}/${APP}/version"
   
     - name: Setup tmate session
       uses: mxschmitt/action-tmate@v3.6      
