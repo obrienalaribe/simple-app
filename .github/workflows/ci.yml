@@ -63,7 +63,7 @@ jobs:
         ref: main
         wait_interval: 5
         inputs: '{"version": ${IMAGE_TAG}'
-        propagate_failure: false
+        propagate_failure: true
         trigger_workflow: true
         wait_workflow: true
         
