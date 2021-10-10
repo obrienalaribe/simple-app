@@ -47,15 +47,16 @@ jobs:
         path: ${{ github.workspace }}/k8s-manifests
      
     - name: Create app subfolder
-      run: mkdir -p ${APP}
+      run: mkdir -p ${{ github.workspace }}/k8s-manifests/${APP}
+
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3.6      
       
     - name: Update app version
       run: |
         echo $IMAGE_TAG > ${APP}/version
         git add ${APP}/version
 
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3.6
       
     - name: Commit & Push
       uses: github-actions-x/commit@v2.8
