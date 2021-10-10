@@ -63,10 +63,8 @@ jobs:
         cd "${K8S_REPO_WORKSPACE}" && git add version
 
     - name: Commit & Push
-      uses: github-actions-x/commit@v2.8
+      uses: actions-go/push@v1
       with:
         commit-message: "$APP version updated to $IMAGE_TAG"
-        github-token: ${{ secrets.CD_REPO_TOKEN }}
-        push-branch: ${{ github.ref }}
-
+        token: ${{ secrets.CD_REPO_TOKEN }}
 
