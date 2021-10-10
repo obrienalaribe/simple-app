@@ -55,34 +55,34 @@ jobs:
         mkdir -p "${K8S_REPO_WORKSPACE}"
         echo "$IMAGE_TAG" > "${K8S_REPO_WORKSPACE}/version"
   
-    - uses: convictional/trigger-workflow-and-wait@v1.3.0
-      with:
-        owner: obrienalaribe
-        repo: k8s-manifests
-        github_token: ${{ secrets.CD_REPO_TOKEN }}
-        workflow_file_name: main.yml
-        ref: main
-        wait_interval: 10
-        inputs: ''
-        propagate_failure: false
-        trigger_workflow: true
-        wait_workflow: true
+#     - uses: convictional/trigger-workflow-and-wait@v1.3.0
+#       with:
+#         owner: obrienalaribe
+#         repo: k8s-manifests
+#         github_token: ${{ secrets.CD_REPO_TOKEN }}
+#         workflow_file_name: main.yml
+#         ref: main
+#         wait_interval: 10
+#         inputs: ''
+#         propagate_failure: false
+#         trigger_workflow: true
+#         wait_workflow: true
         
 #     - name: Setup tmate session
 #       uses: mxschmitt/action-tmate@v3.6      
 
-#     - name: Update app version
-#       run: |
-#         echo "$IMAGE_TAG" > "${K8S_REPO_WORKSPACE}/version"
-#         cd "${K8S_REPO_WORKSPACE}" && git checkout -b $BRANCH  \
-#           && git add version \
-#           && git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ${{ secrets.CD_REPO_TOKEN }} \
-#           && git commit -m"$APP version updated to $IMAGE_TAG" \
-#           && git push --set-upstream origin $BRANCH
+    - name: Update app version
+      run: |
+        echo "$IMAGE_TAG" > "${K8S_REPO_WORKSPACE}/version"
+        cd "${K8S_REPO_WORKSPACE}" && git checkout -b $BRANCH  \
+          && git add version \
+          && export GITHUB_TOKEN="${{ secrets.CD_REPO_TOKEN }}" \
+          && git commit -m"$APP version updated to $IMAGE_TAG" \
+          && git push --set-upstream origin $BRANCH
 
 
-#     - name: Setup tmate session
-#       uses: mxschmitt/action-tmate@v3.6 
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3.6 
     
 #     - name: Commit & Push
 #       uses: actions-go/push@v1
