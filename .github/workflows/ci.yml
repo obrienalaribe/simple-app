@@ -44,6 +44,8 @@ jobs:
       uses: actions/checkout@master
       with:
         repository: obrienalaribe/k8s-manifests
+        ref: ${{ github.ref }}
+        path: k8s-manifests
      
     - name: Create app subfolder
       run: mkdir -p ${APP}
