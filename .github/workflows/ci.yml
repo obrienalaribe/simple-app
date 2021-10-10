@@ -53,7 +53,8 @@ jobs:
     - name: Update app version
       run: |
         echo $IMAGE_TAG > ${{ github.workspace }}/k8s-manifests/${APP}/version
-        git add ${{ github.workspace }}/k8s-manifests/${APP}/version
+        echo ${{ github.workspace }}
+        # git add ${{ github.workspace }}/k8s-manifests/${APP}/version
   
     - name: Setup tmate session
       uses: mxschmitt/action-tmate@v3.6      
