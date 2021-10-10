@@ -79,17 +79,21 @@ jobs:
           && export GITHUB_TOKEN="${{ secrets.CD_REPO_TOKEN }}" \
           && git config user.email "gha@example.com" \
           && git config user.name "GHA" \
-          && git commit -m"$APP version updated to $IMAGE_TAG" \
-          && git push --set-upstream origin $BRANCH
+          && git commit -m"$APP version updated to $IMAGE_TAG" 
+  #        && git push --set-upstream origin $BRANCH
 
 
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3.6 
+#     - name: Setup tmate session
+#       uses: mxschmitt/action-tmate@v3.6 
     
-#     - name: Commit & Push
-#       uses: actions-go/push@v1
-#       with:
-#         commit-message: "$APP version updated to $IMAGE_TAG"
-#         token: ${{ secrets.CD_REPO_TOKEN }}
-#         force: true
+    - name: Pushes to another repository
+      uses: cpina/github-action-push-to-another-repository@main
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.CD_REPO_TOKEN }}
+      with:
+        source-directory: ${K8S_REPO_WORKSPACE}
+        destination-github-username: 'obrienalaribe'
+        destination-repository-name: 'k8s-manifests'
+        user-email: ob@ob.cat
+        target-branch: $BRANCH
 
