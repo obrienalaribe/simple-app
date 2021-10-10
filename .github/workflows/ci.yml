@@ -1,76 +1,49 @@
-name: Build and Deploy to GKE
+name: Build
 
 on:
-  push:
-    branches: ["*"]
-  workflow_dispatch:
+  pull_request:
+    branches: ["main"]
+    types: [assigned, opened, synchronize, reopened]
 
 env:
-  IMAGE: simple-app
-  PROJECT_ID: mv-service-project-7215
-  IMAGE_TAG: ${{ echo $GITHUB_SHA | cut -c 1-7 }}
+  IMAGE_REGISTRY_PROJECT: mv-paid-images-d3d34
 
 jobs:
   build-image:
+
     name: Build & Publish Docker Image
     runs-on: ubuntu-latest
-    
   
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-      
-    - name: Output Image Tag
-      run: echo $IMAGE_TAG
+    
+    - name: Compute Image Tag
+      id: image
+      run: |
+        export GIT_PR_SHA="${{ github.sha }}"
+        export GIT_PR_SHA_SHORT="${GIT_PR_SHA:0:7}"
 
-    # Setup gcloud CLI
-    - uses: google-github-actions/setup-gcloud@v0.2.0
-      with:
-        service_account_key: ${{ secrets.GKE_SA_KEY }}
-        project_id: mv-service-project-7215
-
-    # Configure Docker to use the gcloud command-line tool as a credential
-    # helper for authentication
-    - name: Configure GCR
-      run: |-
-        gcloud --quiet auth configure-docker
-
-    # Build the Docker image
-    - name: Build Docker Image
-      run: |-
-        docker build \
-          --tag "gcr.io/mv-service-project-7215/$GITHUB_REPOSITORY:$IMAGE_TAG" \
-          .
-    - name: Publish Image to GCR
-      run: |-
-        docker push "gcr.io/mv-service-project-7215/$GITHUB_REPOSITORY:$IMAGE_TAG"
+        echo "::set-output name=tag::${GIT_PR_SHA_SHORT}"
+    outputs:
+      image_tag: ${{ steps.image.outputs.tag }}
 
   trigger-deployment:
     name: Trigger Deployment
     runs-on: ubuntu-latest
     needs: [build-image]
-
-    steps:
-    - name: Checkout CD repo
-      uses: actions/checkout@master
+    
+    steps:        
+    - name: Push new Version to CD
+      uses: convictional/trigger-workflow-and-wait@v1.3.0
       with:
-        repository: obrienalaribe/k8s-manifests
-     
-    - name: Create repo folder
-      run: |-
-        mkdir -p $GITHUB_REPOSITORY
-        
-#     - name: Setup tmate session
-#       uses: mxschmitt/action-tmate@v3.6
-      
-    - name: Stage manifests
-      run: |-
-        ls -lt ${GITHUB_REPOSITORY}
-        touch $IMAGE_TAG > ${GITHUB_REPOSITORY}/version
-        git add $GITHUB_REPOSITORY/*
-        
-    - name: Push changes
-      uses: actions-go/push@v1
-      with:
-        commit-message: "This is a commit from CI process"
-        token: ${{ secrets.CD_REPO_TOKEN }}
+        owner: obrienalaribe
+        repo: k8s-manifests
+        github_token: ${{ secrets.CD_REPO_TOKEN }}
+        workflow_file_name: main.yml
+        ref: main
+        wait_interval: 5
+        inputs: '{"version": "${{ needs.build-image.outputs.image_tag }}", "branch": "${{ github.head_ref }}"}'
+        propagate_failure: true
+        trigger_workflow: true
+        wait_workflow: false
