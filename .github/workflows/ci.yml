@@ -56,8 +56,8 @@ jobs:
 
     - name: Update app version
       run: |
-        echo $IMAGE_TAG > ${K8S_REPO_WORKSPACE}/${APP}/version
-        cd ${K8S_REPO_WORKSPACE}/${APP} && git add version
+        echo "$IMAGE_TAG" > "${K8S_REPO_WORKSPACE}/${APP}/version"
+        cd "${K8S_REPO_WORKSPACE}/${APP}" && ls -alt && git remote -v
 
     - name: Commit & Push
       uses: github-actions-x/commit@v2.8
