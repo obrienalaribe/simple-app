@@ -77,6 +77,8 @@ jobs:
         cd "${K8S_REPO_WORKSPACE}" && git checkout -b $BRANCH  \
           && git add version \
           && export GITHUB_TOKEN="${{ secrets.CD_REPO_TOKEN }}" \
+          && git config user.email "gha@example.com"
+          && git config user.name "GHA"
           && git commit -m"$APP version updated to $IMAGE_TAG" \
           && git push --set-upstream origin $BRANCH
 
