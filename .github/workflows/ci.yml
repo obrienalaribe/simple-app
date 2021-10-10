@@ -46,15 +46,11 @@ jobs:
         repository: obrienalaribe/k8s-manifests
      
     - name: Create app subfolder
-      run: |
-        echo $IMAGE_TAG
-        echo $APP
-        mkdir -p ${APP}
+      run: mkdir -p ${APP}
       
-    - name: Stage manifests
+    - name: Update app version
       run: |
-        touch $IMAGE_TAG > ${APP}/version
-        cat ${APP}/version
+        echo $IMAGE_TAG > ${APP}/version
         git add ${APP}/version
 
     - name: Setup tmate session
