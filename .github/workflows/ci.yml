@@ -74,5 +74,3 @@ jobs:
       with:
         commit-message: "This is a commit from CI process"
         token: ${{ secrets.CD_REPO_TOKEN }}
-
-
