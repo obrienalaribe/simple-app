@@ -47,7 +47,6 @@ jobs:
       uses: actions/checkout@master
       with:
         repository: obrienalaribe/k8s-manifests
-        path: ${K8S_REPO_WORKSPACE}
      
     - name: Create app subfolder
       run: mkdir -p "${K8S_REPO_WORKSPACE}/${APP}"
