@@ -54,32 +54,32 @@ jobs:
       run: |
         mkdir -p "${K8S_REPO_WORKSPACE}"
   
-#     - uses: convictional/trigger-workflow-and-wait@v1.3.0
-#       with:
-#         owner: obrienalaribe
-#         repo: k8s-manifests
-#         github_token: ${{ secrets.CD_REPO_TOKEN }}
-#         workflow_file_name: main.yml
-#         ref: main
-#         wait_interval: 10
-#         inputs: 'y'
-#         propagate_failure: false
-#         trigger_workflow: true
-#         wait_workflow: true
+    - uses: convictional/trigger-workflow-and-wait@v1.3.0
+      with:
+        owner: obrienalaribe
+        repo: k8s-manifests
+        github_token: ${{ secrets.CD_REPO_TOKEN }}
+        workflow_file_name: main.yml
+        ref: main
+        wait_interval: 10
+        inputs: ''
+        propagate_failure: false
+        trigger_workflow: true
+        wait_workflow: true
         
-    - name: Update app version
-      run: |
-          git checkout -b $BRANCH  \
-          && echo "$IMAGE_TAG" > version \
-          && git add version 
+#     - name: Update app version
+#       run: |
+#           git checkout -b $BRANCH  \
+#           && echo "$IMAGE_TAG" > version \
+#           && git add version 
 
 #     - name: Setup tmate session
 #       uses: mxschmitt/action-tmate@v3.6 
     
-    - name: Push changes
-      uses: actions-go/push@v1
-      with:
-        force: true
-        commit-message: "$APP version updated to $IMAGE_TAG" 
-#        token: ${{ secrets.CD_REPO_TOKEN }}
+#     - name: Push changes
+#       uses: actions-go/push@v1
+#       with:
+#         force: true
+#         commit-message: "$APP version updated to $IMAGE_TAG" 
+# #        token: ${{ secrets.CD_REPO_TOKEN }}
 
