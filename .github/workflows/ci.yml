@@ -42,6 +42,7 @@ jobs:
       run: |
         echo "IMAGE_TAG=${{ needs.build-image.outputs.image_tag }}" >> $GITHUB_ENV
         echo "APP=$(basename ${{ github.repository }})" >> $GITHUB_ENV
+        echo "K8S_REPO_WORKSPACE=${{ github.workspace }}/${APP}" >> $GITHUB_ENV
         
     - name: Checkout CD repo
       uses: actions/checkout@master
